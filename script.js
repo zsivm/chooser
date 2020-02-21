@@ -1,15 +1,28 @@
 let number = 0;
 
+function init() {
+    addItem();
+    changeFocus();
+}
+
 // adds an item input with corresponding delete button
 function addItem() {
     // main container with id
     let oItemCont = document.createElement("div");
     oItemCont.id = "cont" + number;
-    number++;
 
     // input field
     let oItemInput = document.createElement("input");
+    oItemInput.id = "input" + number;
     oItemInput.placeholder = "Add an item...";
+    oItemInput.addEventListener('keypress', function(e) {
+        if(e.key === 'Enter') {
+            if(document.getElementById("input" + (number - 1)).value !== "") {
+                addItem();
+                changeFocus();
+            }
+        }
+    });
 
     // remove button
     let oRemoveBtn = document.createElement("button");
@@ -23,6 +36,8 @@ function addItem() {
     // append parent to outer div
     let oItems = document.getElementById("items");
     oItems.appendChild(oItemCont);
+
+    number++;
 }
 
 // removes an item row
@@ -46,4 +61,8 @@ function chooseItem() {
     let sChoosenItem = oItems[nRndNum].getElementsByTagName("INPUT")[0].value;
 
     document.getElementById("result").innerHTML = sChoosenItem;
+}
+
+function changeFocus() {
+    document.getElementById("input" + (number - 1)).focus();
 }
